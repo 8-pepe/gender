@@ -41,10 +41,11 @@ if st.button('Generate'):
     print("name:",name)
     print("country:", country)
     print("continent:", continent)
-    'Your individual artwork will be painted...'
+    'Your results will be generated:'
     male_p, female_p = precit_from_data(data, name, country, continent)
 
     if male_p or female_p:
-        st.markdown("The results for the name:")
+        st.markdown("-------------------------------")
+        st.markdown(f"The results for the name {name}:")
         st.markdown(f"Male: {male_p} %")
         st.markdown(f"Female: {female_p} %")
