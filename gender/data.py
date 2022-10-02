@@ -24,3 +24,26 @@ def load_data():
     data = data[data["alpha-2"] != "??"] #filter out names where there is no country assigned
 
     return data
+
+def clean_uploaded_data(df):
+    # Convert to string
+    df["name"] = df["name"].astype(str)
+    df["country"] = df["country"].astype(str)
+    df["continent"] = df["continent"].astype(str)
+    # smal lettters
+    df["name"] = df["name"].apply(lambda x: x.lower())
+    df["country"] = df["country"].apply(lambda x: x.lower())
+    df["continent"] = df["continent"].apply(lambda x: x.lower())
+
+    return df
+
+def shorten_dataframe(data,df):
+    data_short = data[data['name'].isin(df["name"])]
+    print(data.shape)
+    return data_short
+
+def save_result(df_new):
+    import time
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    path_save = os.path.join("data","results",f"{timestamp}_genderized.csv")
+    df_new.to_csv(path_save, index=False)
