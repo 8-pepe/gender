@@ -72,6 +72,7 @@ def precit_from_data(data, name, country, continent):
     male_p, female_p = share_male_female(df_name)
     return male_p, female_p
 
+
 def csv_predict_from_data(row):
     """
     Create a temporary dataframe with name and gender in differnt countries
@@ -94,8 +95,18 @@ def csv_predict_from_data(row):
         gender, perc = share_male_female(df_name)
         return gender, perc
 
-def extend_df_with_result(df, result):
+def extend_result_and_shorten(df, result):
+
     for index, res in enumerate(result):
         df.loc[index, "gender"] = res[0]
         df.loc[index, "percentage"] = res[1]
-    return df
+
+        if df.loc[index, "check_all"] == [False, False]:
+            df.loc[index, "check_all"] = "Name"
+        elif (df.loc[index, "check_all"] == [True, False]) | (df.loc[index, "check_all"] == [True, True]):
+            df.loc[index, "check_all"] = "Name and Country"
+        elif (df.loc[index, "check_all"] == [False, True]) :
+            df.loc[index, "check_all"] = "Name and Continent"
+
+    df = df.rename(columns={"check_all": "method used"})
+    return df[["name","country","continent", "method used","gender","percentage"]].copy()

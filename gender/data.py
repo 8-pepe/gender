@@ -1,7 +1,8 @@
-
 import os
 import pandas as pd
+import streamlit as st
 
+@st.cache(show_spinner=False)
 def load_data():
     path = os.path.join("..","raw_data","wgnd_2_0_name-gender-code.csv")
     df = pd.read_csv(path)

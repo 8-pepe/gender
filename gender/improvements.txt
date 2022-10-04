@@ -1,4 +1,4 @@
-1. Coplete the site
+
 2. See which data is not categorized
-  2.1. Which country names are missing?
-  2.2. Add more data for names
+  2.1. Which country names are missing
+  2.2. Add more data for names (India already in Jupyter Notebook)

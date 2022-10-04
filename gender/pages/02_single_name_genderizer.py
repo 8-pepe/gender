@@ -20,19 +20,33 @@ continent = None
 male_p = False
 female_p = False
 
+
 data = load_data()
+country_list = sorted(data["country"].unique())
+country_list.insert(0, "No Selection")
 
 
 
 
 # streamlit
 name = st.text_input('Put the name here', 'Name')
-country = st.text_input('Country of origin', '')
 
-# country
+with st.container():
+    country = st.selectbox(
+        'Country of origin',
+        (country_list))
+    st.write('You selected:', country)
+    if country == "No Selection":
+        country = False
+
+
+#country = st.text_input('Country of origin', '')
+
+
+# continent
 with st.container():
 
-    continent = st.radio('Chose a continent:', ('No selcetion','Oceania', 'Americas', 'Europe', 'Asia', 'Africa'))
+    continent = st.radio('Chose a continent:', ('No Selcetion','Oceania', 'Americas', 'Europe', 'Asia', 'Africa'))
 if continent == "No selcetion":
     continent = None
 
