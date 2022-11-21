@@ -1,4 +1,5 @@
 import streamlit as st
+from numba import njit
 
 def share_male_female(result):
     male = 0
@@ -23,7 +24,7 @@ def share_male_female(result):
 
     return male_p, female_p
 
-
+@njit
 def csv_share_male_female(result):
     """
     Takes a dataframe and calculates the probability of femal and male
@@ -59,18 +60,20 @@ def csv_share_male_female(result):
 def precit_from_data(data, name, country, continent):
     if name and country:
         st.write("name and country")
-        df_name = data[(data["name"] == name.lower()) & (data["country"] == country)].groupby("gender")["wgt"].sum()
+        df_name_all = data[(data["name"] == name.lower()) & (data["country"] == country)]
+        df_name = df_name_all.groupby("gender")["wgt"].sum()
     elif name and continent:
         st.write("name and continent")
         df_name = data[(data["name"] == name.lower()) & (data["region"] == continent)].groupby("gender")["wgt"].sum()
     elif name:
         st.write("name")
-        df_name = data[data["name"] == name.lower()].groupby("gender")["wgt"].sum()
+        df_name_all = data[(data["name"] == name.lower())]
+        df_name = df_name_all.groupby("gender")["wgt"].sum()
     else:
         print("no data given")
 
     male_p, female_p = share_male_female(df_name)
-    return male_p, female_p
+    return male_p, female_p, df_name_all
 
 
 def csv_predict_from_data(row):

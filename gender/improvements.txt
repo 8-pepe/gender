@@ -2,3 +2,7 @@
 2. See which data is not categorized
   2.1. Which country names are missing
   2.2. Add more data for names (India already in Jupyter Notebook)
+
+gerade dabei versuchen zu beschleunigen mit @njit
+https://towardsdatascience.com/this-decorator-will-make-python-30-times-faster-715ca5a66d5f
+kommen aber noch fehlermeldungen

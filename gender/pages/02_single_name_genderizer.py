@@ -1,8 +1,6 @@
-import pandas as pd
-import os
 import streamlit as st
 from calculate import precit_from_data
-from data import load_data
+from gender.data import load_data
 
 
 st.set_page_config(
@@ -47,8 +45,8 @@ with st.container():
 with st.container():
 
     continent = st.radio('Chose a continent:', ('No Selcetion','Oceania', 'Americas', 'Europe', 'Asia', 'Africa'))
-if continent == "No selcetion":
-    continent = None
+    if continent == "No Selcetion":
+        continent = None
 
 
 if st.button('Generate'):
@@ -56,10 +54,22 @@ if st.button('Generate'):
     print("country:", country)
     print("continent:", continent)
     'Your results will be generated:'
-    male_p, female_p = precit_from_data(data, name, country, continent)
+    male_p, female_p, df_name_all = precit_from_data(data, name, country, continent)
+    print(male_p)
+    print(female_p)
+
+    #  Change how the dataframe is displayed - restructure it in tow dataframes maybe woman and men or by country
+    df_show = df_name_all.drop(columns=["alpha-2", "name", "region", "sub-region"])
+    df_show = df_show[["country", "gender", "wgt"]]
+    df_show.rename(columns={"wgt":"percentage"}, inplace=True)
+    df_show["percentage"] = df_show["percentage"].apply(lambda x: str(round(x*100))) + "%"
 
     if male_p or female_p:
         st.markdown("-------------------------------")
         st.markdown(f"The results for the name {name}:")
         st.markdown(f"Male: {male_p} %")
         st.markdown(f"Female: {female_p} %")
+        st.markdown("-------------------------------")
+        st.markdown(f"Details by countries for name: {name}")
+
+        st.dataframe(df_show)

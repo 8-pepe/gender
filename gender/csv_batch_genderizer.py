@@ -4,6 +4,7 @@ import streamlit as st
 import time
 from datetime import datetime as dt
 from datetime import timedelta as td
+from numba import njit
 from calculate import  csv_predict_from_data, extend_result_and_shorten, csv_share_male_female
 from data import load_data, clean_uploaded_data, shorten_dataframe, save_result
 
@@ -90,6 +91,7 @@ with st.container():
             df = df.reset_index(level=0)
 
             ### Run the classification
+            @njit
             def csv_predict_from_data(row):
                 """
                 Create a temporary dataframe with name and gender in differnt countries
@@ -115,7 +117,7 @@ with st.container():
                     return gender, perc
 
 
-
+            @njit
             def run_apply(df):
                 start_time = dt.now()
                 result = df.apply(csv_predict_from_data, axis=1)
@@ -123,6 +125,7 @@ with st.container():
                 run_time = end_time - start_time
                 run_time =  str(run_time).split(".")[0]
                 return result , run_time
+
             result, run_time = run_apply(df)
             print(run_time)
             df_new = extend_result_and_shorten(df, result)
